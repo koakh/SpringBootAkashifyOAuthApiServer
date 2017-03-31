@@ -28,6 +28,12 @@ http://stackoverflow.com/questions/21128058/invalid-csrf-token-null-was-found-on
 
 - [ ] Google+
 - [ ] OAuth KeyCloak
+- [ ] Store users and logins in Neo4j
 - [ ] Neo4J Api
-
+- [ ] Remove angular and Work With Aurelia
 - [ ] Android Connect 
+
+### Install Developer Tools
+
+- [LiveReload](http://livereload.com/)
+- [Live realod Chrome Extension](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei)

@@ -1,6 +1,7 @@
 package com.koakh;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -23,6 +24,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -47,6 +49,11 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
   @Autowired
   private OAuth2ClientContext oauth2ClientContext;
 
+  @Value("${facebook.client.clientId}")
+  private String facebookClientId;
+  @Value("${github.client.clientId}")
+  private String gitHubClientId;
+
   public static void main(String[] args) {
     SpringApplication.run(SocialApplication.class, args);
   }
@@ -54,7 +61,32 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
   @RequestMapping({ "/user", "/me" })
   public Map<String, String> user(Principal principal) {
     Map<String, String> map = new LinkedHashMap<>();
-    map.put("name", principal.getName());
+    LinkedHashMap userDetails = ((LinkedHashMap) ((OAuth2Authentication) principal).getUserAuthentication().getDetails());
+    String clientId = ((OAuth2Authentication) principal).getOAuth2Request().getClientId();
+    String dbKey = String.format("%s.%s", clientId, userDetails.get("id").toString());
+    String clientName = null;
+
+    // Shared OAuth Properties
+    map.put("user", principal.getName());
+    map.put("id", userDetails.get("id").toString());
+    map.put("name", userDetails.get("name").toString());
+
+    if (clientId.equals(gitHubClientId)) {
+      clientName = "github";
+      map.put("login", userDetails.get("login").toString());
+      map.put("email", userDetails.get("email").toString());
+      map.put("avatar", userDetails.get("avatar_url").toString());
+      map.put("url", userDetails.get("url").toString());
+    }
+    else if (clientId.equals(facebookClientId)) {
+      clientName = "facebook";
+      map.put("login", null);
+      map.put("email", null);
+      map.put("avatar", null);
+      map.put("url", userDetails.get("link").toString());
+    }
+    map.put("client", clientName);
+
     return map;
   }
 
@@ -103,7 +135,8 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
     OAuth2RestTemplate template = new OAuth2RestTemplate(client.getClient(), oauth2ClientContext);
     filter.setRestTemplate(template);
     UserInfoTokenServices tokenServices = new UserInfoTokenServices(
-      client.getResource().getUserInfoUri(), client.getClient().getClientId());
+      client.getResource().getUserInfoUri(), client.getClient().getClientId()
+    );
     tokenServices.setRestTemplate(template);
     filter.setTokenServices(tokenServices);
     return filter;

@@ -26,7 +26,7 @@
 
 <div class="container" ng-show="home.authenticated">
   <h1>Authed</h1>
-  <p>Logged in as: <span ng-bind="home.user"></span><p>
+  <p>Logged in as: <span ng-bind="home.name"></span> (<span ng-bind="home.client"></span>)<p>
   <p>Call user api: <a href="/user">click here</a><p>
   <div>
     <button ng-click="home.logout()" class="btn btn-primary">Logout</button>
@@ -40,7 +40,14 @@
     var self = this;
 
     $http.get("/user").success(function (data) {
-      self.user = data.userAuthentication.details.name;
+      self.client = data.client;
+      self.user = data.user;//data.userAuthentication.details.name; > old with full Principal details
+      self.id = data.id;
+      self.login = data.login;
+      self.name = data.name;
+      self.email = data.email;
+      self.avatar = data.avatar;
+      self.url = data.url;
       self.authenticated = true;
     }).error(function () {
       self.user = "N/A";
