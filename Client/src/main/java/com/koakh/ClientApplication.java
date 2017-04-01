@@ -19,6 +19,7 @@ public class ClientApplication {
 	public String home(Principal user) {
 		return "Hello " + user.getName();
 	}
+
 	public static void main(String[] args) {
 		new SpringApplicationBuilder(ClientApplication.class)
 			.properties("spring.config.name=client").run(args);

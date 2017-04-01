@@ -1,5 +1,20 @@
 - [TUTORIAL : Spring Boot and OAuth2](https://spring.io/guides/tutorials/spring-boot-oauth2/)
 
+---
+### Server
+
+cd Server
+gradlew bootRun
+http://localhost:8080
+
+---
+### Client
+
+cd Client
+gradlew bootRun
+http://localhost:9999/client
+
+
 ```
 $ curl acme:acmesecret@localhost:8080/oauth/token -d grant_type=client_credentials
 {"access_token":"370592fd-b9f8-452d-816a-4fd5c6b4b8a6","token_type":"bearer","expires_in":43199,"scope":"read write"}
