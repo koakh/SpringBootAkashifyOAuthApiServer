@@ -1,4 +1,10 @@
 - [TUTORIAL : Spring Boot and OAuth2](https://spring.io/guides/tutorials/spring-boot-oauth2/)
+- [Spring boot - Google Authentication Sample](https://github.com/SoatGroup/spring-boot-google-auth)
+
+---
+### How to Links
+
+- [Field Dependency Injection Considered Harmful](http://vojtechruzicka.com/field-dependency-injection-considered-harmful/)
 
 ---
 ### Server
