@@ -104,25 +104,9 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
     return map;
   }
 
-  //@RequestMapping("/unauthenticated")
-  //public String unauthenticated() {
-  //  return "redirect:/?error=true";
-  //}
-
-  //@Override
-  //protected void configure(HttpSecurity http) throws Exception {
-  //  // @formatter:off
-  //  http.antMatcher("/**").authorizeRequests().antMatchers("/", "/login**", "/webjars/**").permitAll().anyRequest()
-  //      .authenticated().and().exceptionHandling()
-  //      .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/")).and().logout()
-  //      .logoutSuccessUrl("/").permitAll().and().csrf()
-  //      .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
-  //      .addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class);
-  //  // @formatter:on
-  //}
-
   @Override
   protected void configure(HttpSecurity http) throws Exception {
+    // @formatter:off
     http
         // All requests are protected by default
         .antMatcher("/**")
@@ -138,6 +122,7 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
         .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
         // OAuth2ClientContext Filter
         .and().addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class);
+    // @formatter:on
   }
 
   @Configuration
@@ -145,10 +130,8 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
   protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
-      // @formatter:off
       http.antMatcher("/me")
           .authorizeRequests().anyRequest().authenticated();
-      // @formatter:on
     }
   }
 
@@ -175,12 +158,19 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
     return new ClientResources();
   }
 
+  @Bean
+  @ConfigurationProperties("google")
+  public ClientResources google() {
+    return new ClientResources();
+  }
+
   // Configure Filters
   private Filter ssoFilter() {
     CompositeFilter filter = new CompositeFilter();
     List<Filter> filters = new ArrayList<>();
     filters.add(ssoFilter(facebook(), "/login/facebook"));
     filters.add(ssoFilter(github(), "/login/github"));
+    filters.add(ssoFilter(google(), "/login/google"));
     filter.setFilters(filters);
     return filter;
   }
@@ -198,23 +188,4 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
     filter.setTokenServices(tokenServices);
     return filter;
   }
-
-  //@Bean
-  //public AuthoritiesExtractor authoritiesExtractor(OAuth2RestOperations template) {
-  //  return map -> {
-  //    String url = (String) map.get("organizations_url");
-  //    @SuppressWarnings("unchecked")
-  //    List<Map<String, Object>> orgs = template.getForObject(url, List.class);
-  //    if (orgs.stream()
-  //        .anyMatch(org -> "spring-projects".equals(org.get("login")))) {
-  //      return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER");
-  //    }
-  //    throw new BadCredentialsException("Not in Spring Projects origanization");
-  //  };
-  //}
-
-  //@Bean
-  //public OAuth2RestTemplate oauth2RestTemplate(OAuth2ProtectedResourceDetails resource, OAuth2ClientContext context) {
-  //  return new OAuth2RestTemplate(resource, context);
-  //}
 }

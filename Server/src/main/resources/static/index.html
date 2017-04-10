@@ -22,6 +22,9 @@
   <div>
     With Github: <a href="/login/github">click here</a>
   </div>
+  <div>
+    With Google+: <a href="/login/google">click here</a>
+  </div>
 </div>
 <div class="container" ng-show="home.authenticated">
   <h1>Logged</h1>
@@ -34,6 +37,7 @@
   <p>Email: <span ng-bind="home.email"></span></p>
   <p>Avatar: <span ng-bind="home.avatar"></span></p>
   <p>Url: <span ng-bind="home.url"></span></p>
+  <p>Call Api: <a href="/user">click here</a></p>
   <div>
     <button ng-click="home.logout()" class="btn btn-primary">Logout</button>
   </div>
