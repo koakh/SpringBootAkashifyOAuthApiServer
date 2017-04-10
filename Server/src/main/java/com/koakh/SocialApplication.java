@@ -50,6 +50,8 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
   private String facebookClientId;
   @Value("${github.client.clientId}")
   private String gitHubClientId;
+  @Value("${google.client.clientId}")
+  private String googleClientId;
 
   private OAuth2ClientContext oauth2ClientContext;
 
@@ -67,35 +69,51 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
     Map<String, String> map = new LinkedHashMap<>();
     map.put("name", principal.getName());
     String clientId = ((OAuth2Authentication) principal).getOAuth2Request().getClientId();
+    String userId = null;
     String clientName = null;
+    String dbKey = null;
 
     Object getUserAuthenticationDetails = ((OAuth2Authentication) principal).getUserAuthentication().getDetails();
 
     // github and facebook clients
     if (getUserAuthenticationDetails instanceof LinkedHashMap) {
       LinkedHashMap userDetails = ((LinkedHashMap) ((OAuth2Authentication) principal).getUserAuthentication().getDetails());
-      String dbKey = dbKey = String.format("%s.%s", clientId, userDetails.get("id").toString());
       boolean authenticated = ((OAuth2Authentication) principal).getUserAuthentication().isAuthenticated();
 
       // Shared OAuth Properties
       map.put("user", principal.getName());
       map.put("authenticated", (authenticated) ? "true" : "false");
-      map.put("id", userDetails.get("id").toString());
       map.put("fullName", userDetails.get("name").toString());
 
       if (clientId.equals(gitHubClientId)) {
         clientName = "github";
+        userId = userDetails.get("id").toString();
+        map.put("id", userId);
         map.put("login", userDetails.get("login").toString());
         map.put("email", userDetails.get("email").toString());
         map.put("avatar", userDetails.get("avatar_url").toString());
         map.put("url", userDetails.get("url").toString());
       } else if (clientId.equals(facebookClientId)) {
         clientName = "facebook";
+        userId = userDetails.get("id").toString();
+        map.put("id", userId);
         map.put("login", null);
         map.put("email", null);
         map.put("avatar", null);
         map.put("url", userDetails.get("link").toString());
+      } else if (clientId.equals(googleClientId)) {
+        clientName = "google";
+        userId = userDetails.get("sub").toString();
+        map.put("id", userId);
+        map.put("login", userDetails.get("email").toString());
+        map.put("email", userDetails.get("email").toString());
+        map.put("avatar", userDetails.get("picture").toString());
+        map.put("url", userDetails.get("profile").toString());
       }
+
+      // Assign dbKey
+      dbKey = String.format("%s.%s", clientId, userId);
+
     } else {
       clientName = "acme";
     }
