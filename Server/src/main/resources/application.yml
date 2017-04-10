@@ -28,14 +28,17 @@ github:
     userInfoUri: https://api.github.com/user
 google:
   client:
-    clientId: 300193370741-n08gm32f8o85opoab3bvveipp071fn52.apps.googleusercontent.com
-    clientSecret: FB6aguU3boXYgjguoiUUPTQw
-    accessTokenUri: https://accounts.google.com/o/oauth2/token
+    clientId: 300193370741-g7rpb814qrbrbjc54rs3qjm5uup5u4fm.apps.googleusercontent.com
+    clientSecret: 70sKoIegr2fkaRAIt_Agx9Ou
+    accessTokenUri: https://www.googleapis.com/oauth2/v4/token
     userAuthorizationUri: https://accounts.google.com/o/oauth2/auth
     clientAuthenticationScheme: query
-    scope: profile email
+    scope:
+      - profile
+      - email
   resource:
-    userInfoUri: https://www.googleapis.com/plus/v1/people/me
+    userInfoUri: https://www.googleapis.com/oauth2/v3/userinfo
+    preferTokenInfo: false
 
 logging:
   level:

@@ -60,6 +60,12 @@ curl -H "Authorization: Bearer 2b59f68d-4a30-4ffe-bc1f-ddde51556d1f" localhost:8
 ### ToDo
 
 - [ ] Google+
+	http://dreamix.eu/blog/java/configuring-google-as-oauth2-authorization-provider-in-spring-boot	
+	https://github.com/skate056/spring-security-oauth2-google
+	http://stackoverflow.com/questions/31383514/unable-to-get-enableoauth2sso-working-badcredentialsexception-could-not-obta	
+	GET request for "https://www.googleapis.com/plus/v1/people/me" resulted in 403 (Forbidden); invoking error handler
+	https://github.com/lorenzodee/spring-security-oauth2-google/blob/master/src/main/resources/google-oauth2.properties
+
 - [ ] OAuth KeyCloak
 - [ ] Store users and logins in Neo4j
 - [ ] Neo4J Api
