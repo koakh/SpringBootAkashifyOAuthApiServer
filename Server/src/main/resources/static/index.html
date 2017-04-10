@@ -14,8 +14,8 @@
 	src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body ng-app="app" ng-controller="home as home">
-	<h1>Login</h1>
 	<div class="container" ng-show="!home.authenticated">
+    <h1>Login</h1>
 		<div>
 			With Facebook: <a href="/login/facebook">click here</a>
 		</div>
@@ -24,7 +24,8 @@
 		</div>
 	</div>
 	<div class="container" ng-show="home.authenticated">
-		Logged in as: <span ng-bind="home.user"></span>
+    <h1>Logged</h1>
+    <p>Logged in as: <span ng-bind="home.user"></span></p
 		<div>
 			<button ng-click="home.logout()" class="btn btn-primary">Logout</button>
 		</div>
@@ -39,7 +40,7 @@
 						}).controller("home", function($http, $location) {
 					var self = this;
 					$http.get("/user").success(function(data) {
-						if (data.name) {
+						if (data.authenticated == "true") {
 							self.user = data.name;
 							self.authenticated = true;
 						} else {

@@ -1,6 +1,10 @@
 - [TUTORIAL : Spring Boot and OAuth2](https://spring.io/guides/tutorials/spring-boot-oauth2/)
 - [Spring boot - Google Authentication Sample](https://github.com/SoatGroup/spring-boot-google-auth)
 
+- [OAuth 2 Developers Guide](https://projects.spring.io/spring-security-oauth/docs/oauth2.html)
+
+- [SSO with OAuth2: Angular JS and Spring Security Part](https://spring.io/blog/2015/02/03/sso-with-oauth2-angular-js-and-spring-security-part-v)
+
 ---
 ### How to Links
 
@@ -45,6 +49,14 @@ $ curl acme:acmesecret@localhost:8080/oauth/token -d grant_type=password -d user
 Invalid CSRF Token 'null' was found on the request parameter '_csrf' or header 'X-CSRF-TOKEN'
 http://stackoverflow.com/questions/21128058/invalid-csrf-token-null-was-found-on-the-request-parameter-csrf-or-header
 
+
+
+acme:acmesecret@localhost:8080/user?access_token=0ff33a63-e0fa-4c25-92ce-fd651891be51
+curl -H "Authorization: Bearer 2b59f68d-4a30-4ffe-bc1f-ddde51556d1f" localhost:8080/user
+
+
+
+
 ### ToDo
 
 - [ ] Google+
@@ -58,3 +70,19 @@ http://stackoverflow.com/questions/21128058/invalid-csrf-token-null-was-found-on
 
 - [LiveReload](http://livereload.com/)
 - [Live realod Chrome Extension](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei)
+
+
+http://stackoverflow.com/questions/32076503/using-postman-to-access-oauth-2-0-google-apis
+
+Auth URL = https://accounts.google.com/o/oauth2/v2/auth
+Access Token URL = https://www.googleapis.com/oauth2/v4/token
+
+https://console.developers.google.com/apis/credentials?highlightClient=417427748635-h05mh84q1vkk6pav7cqhrrjnhe4ugkes.apps.googleusercontent.com&project=encouraging-mix-162621
+
+Cliente OAuth
+Este é seu ID do cliente
+417427748635-h05mh84q1vkk6pav7cqhrrjnhe4ugkes.apps.googleusercontent.com
+Esta é sua chave secreta do cliente
+sHnnQaAYSF9XmTQK2BdKD9pf
+
+https://developers.google.com/oauthplayground/?code=4/xWixvfAhKNcDMShhrLn2HBvbX5dDtSUe7MSz6QOWbGY#
