@@ -1,3 +1,10 @@
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+server:
+  port: 8084
+
 security:
   oauth2:
     client:
@@ -39,7 +46,3 @@ google:
   resource:
     userInfoUri: https://www.googleapis.com/oauth2/v3/userinfo
     preferTokenInfo: false
-
-logging:
-  level:
-    org.springframework.security: DEBUG
