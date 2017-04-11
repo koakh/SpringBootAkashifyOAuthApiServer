@@ -100,7 +100,8 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
         map.put("login", null);
         map.put("email", null);
         map.put("avatar", null);
-        map.put("url", userDetails.get("link").toString());
+        map.put("url", (userDetails.get("link") != null) ? userDetails.get("link").toString() : null);
+        map.put("url", null);
       } else if (clientId.equals(googleClientId)) {
         clientName = "google";
         userId = userDetails.get("sub").toString();
