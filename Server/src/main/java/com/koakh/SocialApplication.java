@@ -31,6 +31,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -66,14 +67,25 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
 
   @RequestMapping({"/user", "/me"})
   public Map<String, String> user(Principal principal) {
+    // Mapper
     Map<String, String> map = new LinkedHashMap<>();
     map.put("name", principal.getName());
+    // ClientId
     String clientId = ((OAuth2Authentication) principal).getOAuth2Request().getClientId();
+    // OAuth2AuthenticationDetails
+    OAuth2AuthenticationDetails oAuth2Details = ((OAuth2AuthenticationDetails) ((OAuth2Authentication) principal).getDetails());
+    String remoteAddress = oAuth2Details.getRemoteAddress();
+    String sessionId = oAuth2Details.getSessionId();
+    String tokenType = oAuth2Details.getTokenType();
+    String tokenValue = oAuth2Details.getTokenValue();
+    // UserAuthenticationDetails
+    Object getUserAuthenticationDetails = ((OAuth2Authentication) principal).getUserAuthentication().getDetails();
+    // Role
+    Object[] roles = ((OAuth2Authentication) principal).getUserAuthentication().getAuthorities().toArray();
+    // Helpers
     String userId = null;
     String clientName = null;
     String dbKey = null;
-
-    Object getUserAuthenticationDetails = ((OAuth2Authentication) principal).getUserAuthentication().getDetails();
 
     // github and facebook clients
     if (getUserAuthenticationDetails instanceof LinkedHashMap) {
@@ -98,10 +110,9 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
         userId = userDetails.get("id").toString();
         map.put("id", userId);
         map.put("login", null);
-        map.put("email", null);
-        map.put("avatar", null);
+        map.put("email", userDetails.get("email").toString());
+        map.put("avatar", ((LinkedHashMap) ((LinkedHashMap) userDetails.get("picture")).get("data")).get("url").toString());
         map.put("url", (userDetails.get("link") != null) ? userDetails.get("link").toString() : null);
-        map.put("url", null);
       } else if (clientId.equals(googleClientId)) {
         clientName = "google";
         userId = userDetails.get("sub").toString();

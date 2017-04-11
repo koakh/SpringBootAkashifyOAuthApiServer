@@ -59,7 +59,7 @@ curl -H "Authorization: Bearer 2b59f68d-4a30-4ffe-bc1f-ddde51556d1f" localhost:8
 
 ### ToDo
 
-- [ ] Google+
+- [+] Google+
 - [ ] OAuth KeyCloak
 - [ ] Store users and logins in Neo4j
 - [ ] Neo4J Api
