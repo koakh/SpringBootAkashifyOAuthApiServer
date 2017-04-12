@@ -6,6 +6,10 @@ server:
   port: 8084
 
 security:
+  user:
+    # Default user name/password
+    name: user
+    password: 6562ebf086b5
   oauth2:
     client:
       client-id: acme

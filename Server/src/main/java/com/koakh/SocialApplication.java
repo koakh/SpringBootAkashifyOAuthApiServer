@@ -47,6 +47,8 @@ import org.springframework.web.filter.CompositeFilter;
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SocialApplication extends WebSecurityConfigurerAdapter {
 
+  @Value("${security.client.client-id}")
+  private String acmeClientId;
   @Value("${facebook.client.clientId}")
   private String facebookClientId;
   @Value("${github.client.clientId}")
@@ -82,6 +84,8 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
     Object getUserAuthenticationDetails = ((OAuth2Authentication) principal).getUserAuthentication().getDetails();
     // Role
     Object[] roles = ((OAuth2Authentication) principal).getUserAuthentication().getAuthorities().toArray();
+    // Scope
+    Object[] scope = ((OAuth2Authentication) principal).getOAuth2Request().getScope().toArray();
     // Helpers
     String userId = null;
     String clientName = null;
@@ -95,7 +99,16 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
       // Shared OAuth Properties
       map.put("user", principal.getName());
       map.put("authenticated", (authenticated) ? "true" : "false");
-      map.put("fullName", userDetails.get("name").toString());
+
+      // Acme Client
+      if (clientId.equals(acmeClientId)) {
+        map.put("grant_type", userDetails.get("grant_type").toString());
+        map.put("username", userDetails.get("name").toString());
+      }
+      // Shared for all other clients
+      else {
+        map.put("fullName", userDetails.get("name").toString());
+      }
 
       if (clientId.equals(gitHubClientId)) {
         clientName = "github";
