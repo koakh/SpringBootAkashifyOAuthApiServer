@@ -1,21 +1,22 @@
+server:
+  port: 8084
+
 logging:
   level:
     org.springframework.security: DEBUG
 
-server:
-  port: 8084
-
 security:
-  user:
-    # Default user name/password
-    name: user
-    password: 6562ebf086b5
   oauth2:
     client:
       client-id: acme
       client-secret: acmesecret
       scope: read,write
       auto-approve-scopes: '.*'
+  user:
+    # Default user name/password
+    name: user
+    # Remove password to use "Using default security password"
+    password: 6562ebf086b5
 
 facebook:
   client:

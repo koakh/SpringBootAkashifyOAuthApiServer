@@ -47,7 +47,7 @@ import org.springframework.web.filter.CompositeFilter;
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SocialApplication extends WebSecurityConfigurerAdapter {
 
-  @Value("${security.client.client-id}")
+  @Value("${security.oauth2.client.client-id}")
   private String acmeClientId;
   @Value("${facebook.client.clientId}")
   private String facebookClientId;
@@ -81,37 +81,40 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
     String tokenType = oAuth2Details.getTokenType();
     String tokenValue = oAuth2Details.getTokenValue();
     // UserAuthenticationDetails
-    Object getUserAuthenticationDetails = ((OAuth2Authentication) principal).getUserAuthentication().getDetails();
-    // Role
-    Object[] roles = ((OAuth2Authentication) principal).getUserAuthentication().getAuthorities().toArray();
-    // Scope
-    Object[] scope = ((OAuth2Authentication) principal).getOAuth2Request().getScope().toArray();
+    Object authenticationDetails = null;
+    Object[] roles = null;
+    Object[] scopes = null;
+    if (((OAuth2Authentication) principal).getUserAuthentication() != null) {
+      authenticationDetails = ((OAuth2Authentication) principal).getUserAuthentication().getDetails();
+      roles = ((OAuth2Authentication) principal).getUserAuthentication().getAuthorities().toArray();
+      scopes = ((OAuth2Authentication) principal).getOAuth2Request().getScope().toArray();
+    }
     // Helpers
     String userId = null;
-    String clientName = null;
     String dbKey = null;
 
     // github and facebook clients
-    if (getUserAuthenticationDetails instanceof LinkedHashMap) {
+    if (authenticationDetails instanceof LinkedHashMap) {
       LinkedHashMap userDetails = ((LinkedHashMap) ((OAuth2Authentication) principal).getUserAuthentication().getDetails());
       boolean authenticated = ((OAuth2Authentication) principal).getUserAuthentication().isAuthenticated();
 
       // Shared OAuth Properties
+      map.put("client", clientId);
       map.put("user", principal.getName());
       map.put("authenticated", (authenticated) ? "true" : "false");
 
       // Acme Client
       if (clientId.equals(acmeClientId)) {
         map.put("grant_type", userDetails.get("grant_type").toString());
-        map.put("username", userDetails.get("name").toString());
+        map.put("username", userDetails.get("username").toString());
       }
       // Shared for all other clients
       else {
         map.put("fullName", userDetails.get("name").toString());
       }
 
+      // Social Clients
       if (clientId.equals(gitHubClientId)) {
-        clientName = "github";
         userId = userDetails.get("id").toString();
         map.put("id", userId);
         map.put("login", userDetails.get("login").toString());
@@ -119,7 +122,6 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
         map.put("avatar", userDetails.get("avatar_url").toString());
         map.put("url", userDetails.get("url").toString());
       } else if (clientId.equals(facebookClientId)) {
-        clientName = "facebook";
         userId = userDetails.get("id").toString();
         map.put("id", userId);
         map.put("login", null);
@@ -127,7 +129,6 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
         map.put("avatar", ((LinkedHashMap) ((LinkedHashMap) userDetails.get("picture")).get("data")).get("url").toString());
         map.put("url", (userDetails.get("link") != null) ? userDetails.get("link").toString() : null);
       } else if (clientId.equals(googleClientId)) {
-        clientName = "google";
         userId = userDetails.get("sub").toString();
         map.put("id", userId);
         map.put("login", userDetails.get("email").toString());
@@ -138,12 +139,8 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
 
       // Assign dbKey
       dbKey = String.format("%s.%s", clientId, userId);
-
-    } else {
-      clientName = "acme";
     }
 
-    map.put("client", clientName);
     return map;
   }
 

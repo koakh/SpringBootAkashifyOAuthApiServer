@@ -46,6 +46,12 @@ $ curl acme:acmesecret@localhost:8080/oauth/token -d grant_type=password -d user
 {"access_token":"aa49e025-c4fe-4892-86af-15af2e6b72a2","token_type":"bearer","refresh_token":"97a9f978-7aad-4af7-9329-78ff2ce9962d","expires_in":43199,"scope":"read write"}
 ```
 
+```
+$ request with access_token
+curl http://localhost:8084/me -H "Authorization: Bearer aa49e025-c4fe-4892-86af-15af2e6b72a2"
+```
+
+
 Invalid CSRF Token 'null' was found on the request parameter '_csrf' or header 'X-CSRF-TOKEN'
 http://stackoverflow.com/questions/21128058/invalid-csrf-token-null-was-found-on-the-request-parameter-csrf-or-header
 
