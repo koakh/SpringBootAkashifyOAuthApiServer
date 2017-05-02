@@ -51,16 +51,9 @@ $ request with access_token
 curl http://localhost:8084/me -H "Authorization: Bearer aa49e025-c4fe-4892-86af-15af2e6b72a2"
 ```
 
-
-Invalid CSRF Token 'null' was found on the request parameter '_csrf' or header 'X-CSRF-TOKEN'
-http://stackoverflow.com/questions/21128058/invalid-csrf-token-null-was-found-on-the-request-parameter-csrf-or-header
-
-
-
+Get with Access Token 
+http://akashify.com:8084/me?access_token=696ab9db-4bf5-4dff-9a14-583eb69eda6c
 acme:acmesecret@localhost:8080/user?access_token=0ff33a63-e0fa-4c25-92ce-fd651891be51
-curl -H "Authorization: Bearer 2b59f68d-4a30-4ffe-bc1f-ddde51556d1f" localhost:8080/user
-
-
 
 
 ### ToDo
@@ -92,3 +85,26 @@ Esta é sua chave secreta do cliente
 sHnnQaAYSF9XmTQK2BdKD9pf
 
 https://developers.google.com/oauthplayground/?code=4/xWixvfAhKNcDMShhrLn2HBvbX5dDtSUe7MSz6QOWbGY#
+
+
+
+
+
+
+
+
+
+
+
+A simple OAuth protected REST service built with Spring Boot and Spring Security OAuth
+This is a simple REST service that provides a single RESTful endpoint protected by OAuth 2. The REST service is based on the Building a RESTful Web Service getting started guide. This project incorporates the new Java-based configuration support, now available in Spring Security OAuth 2.0. Please log any issues or feature requests to the Spring Security OAuth project.
+https://github.com/royclarkson/spring-rest-service-oauth
+
+
+
+
+
+Spring Boot Security OAuth2 with Form Login
+http://stackoverflow.com/questions/31494282/spring-boot-security-oauth2-with-form-login
+
+
