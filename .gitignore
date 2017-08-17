@@ -6,5 +6,8 @@
 .DS_Store
 /build
 /captures
+.bak
 .src
-.NOTES.md
+google_client_id.json
+LINKS.md
+PRIVATE.md
