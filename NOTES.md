@@ -81,4 +81,4 @@ acme:acmesecret@localhost:8080/user?access_token=0ff33a63-e0fa-4c25-92ce-fd65189
 ---
 ### Organize
 
-- []Spring Boot Security OAuth2 with Form Login](http://stackoverflow.com/questions/31494282/spring-boot-security-oauth2-with-form-login)
+- [ ] Spring Boot Security OAuth2 with Form Login](http://stackoverflow.com/questions/31494282/spring-boot-security-oauth2-with-form-login)
